@@ -25,7 +25,7 @@ The mod is distrubuted in two versions
 * Ensure the BattlEye anti-cheat is disabled in your game's retailer (Rockstar Games Launcher/Epic Games Store/Steam). 
 
 ## Acknowledgments
-Special thanks to the nta and the CitizenFX/FiveM project for researching these issues and implementing fixes for them in FiveM. This mod wouldn't be possible without their work <3
+Special thanks to nta and the CitizenFX/FiveM project for researching these issues and implementing fixes for them in FiveM. This mod wouldn't be possible without their work <3
 
 Code that is adapted from the CitizenFX project is marked with a comment `/* Adapted from the CitizenFX project` and licensed according to the [LICENSE.CitizenFX](LICENSE.CitizenFX) file.
 * [The CitizenFX/FiveM project](https://github.com/citizenfx/fivem)
