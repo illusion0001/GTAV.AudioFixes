@@ -25,7 +25,7 @@ The mod is distrubuted in two versions
 * Ensure the BattlEye anti-cheat is disabled in your game's retailer (Rockstar Games Launcher/Epic Games Store/Steam). 
 
 ## Acknowledgments
+* Special thanks to nta and [The CitizenFX/FiveM project](https://github.com/citizenfx/fivem) for researching these issues and implementing fixes for them in FiveM. This mod wouldn't be possible without their work <3
+Code that is adapted from the CitizenFX project is marked with a comment `/* Adapted from the CitizenFX project` and licensed according to the [LICENSE.CitizenFX](LICENSE.CitizenFX) file.
 
-This mod uses snippets of code from the CitizenFX/FiveM project. That code is marked with a comment `Adapted from the CitizenFX project` and licensed according to the [LICENSE.CitizenFX](LICENSE.CitizenFX) file.
-* [FiveM](https://github.com/citizenfx/fivem)
 * Special For for finding the 270 FPS limit and providing a pattern for it
