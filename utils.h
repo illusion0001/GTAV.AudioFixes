@@ -7,6 +7,7 @@
 #pragma once
 
 #include <string>
+#include <windows.h>
 
 // returns module load path with trailing slash
 std::string GetCurrentModulePath();
@@ -26,4 +27,15 @@ inline T get_address(uintptr_t address)
 	target += (address + 4);
 
 	return (T)target;
+}
+
+template<typename AddressType>
+inline void nop(AddressType address, size_t length)
+{
+	DWORD oldProtect;
+	VirtualProtect((void*)address, length, PAGE_EXECUTE_READWRITE, &oldProtect);
+
+	memset((void*)address, 0x90, length);
+
+	VirtualProtect((void*)address, length, oldProtect, &oldProtect);
 }
