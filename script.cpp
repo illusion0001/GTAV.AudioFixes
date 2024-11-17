@@ -32,21 +32,28 @@ void main()
 	*	https://runtime.fivem.net/fivem-service-agreement-4.pdf
 	*	https://github.com/citizenfx/fivem/blob/master/code/LICENSE
 	*/
-	const char* asynchronousAudioPattern = "E8 ? ? ? ? 40 38 35 ? ? ? ? 75 05"; 
+	const char* asynchronousAudioPattern = "E8 ? ? ? ? 40 38 35 ? ? ? ? 75 05";
 	const char* audioTimeoutPattern = "8B 15 ? ? ? ? 41 03 D6 3B";
 
 	/*
-	*   Credit to Special For for finding this frame limiter sleep loop.
+	*   Credit to Special For for finding this CSystem frame limiter sleep loop and 
 	*/
 	const char* frameLimiterPattern = "F3 44 0F 59 05 ? ? ? ? 0F 28 C7 F3 41 0F 58 C0 0F 2F C6 72 ? E8";
+	const char* audioLimiter2Pattern = "48 8B 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 40 38 35 ?? ?? ?? ?? 75 ?? 40 38 35 ?? ?? ?? ?? 75 ?? E8 ?? ?? ?? ?? 84 C0";
 
 	bool* asynchronousAudio = get_address<bool*>((uintptr_t)PatternScan(GetModuleHandleW(L"GTA5.exe"), asynchronousAudioPattern) + 8);
 	int* audioTimeout = get_address<int*>((uintptr_t)PatternScan(GetModuleHandleW(L"GTA5.exe"), audioTimeoutPattern) + 2);
 
-	uint16_t* frameLimiterLoop = (uint16_t*)PatternScan(GetModuleHandleW(L"GTA5.exe"), frameLimiterPattern) + 20;
+	uint8_t* frameLimiterLoop = (uint8_t*)(PatternScan(GetModuleHandleW(L"GTA5.exe"), frameLimiterPattern));
+	uint8_t* audioLimiter2 = (uint8_t*)(PatternScan(GetModuleHandleW(L"GTA5.exe"), audioLimiter2Pattern));
 	if (uncapFPS) {
 		*asynchronousAudio = false;
-		nop(frameLimiterLoop, 2);
+
+		// If you load a save, these will be null because we have already patched that code and the pattern doesn't match
+		if (frameLimiterLoop && audioLimiter2) {
+			nop(frameLimiterLoop + 20, 2);
+			nop(audioLimiter2 + 7, 5);
+		}
 	}
 
 	if (enableStutterFix) {
