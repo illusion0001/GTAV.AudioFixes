@@ -39,3 +39,14 @@ inline void nop(AddressType address, size_t length)
 
 	VirtualProtect((void*)address, length, oldProtect, &oldProtect);
 }
+
+template<typename AddressType>
+inline void Write(AddressType address, const void* data, size_t length)
+{
+	DWORD oldProtect;
+	VirtualProtect((void*)address, length, PAGE_EXECUTE_READWRITE, &oldProtect);
+
+	memcpy((void*)address, data, length);
+
+	VirtualProtect((void*)address, length, oldProtect, &oldProtect);
+}

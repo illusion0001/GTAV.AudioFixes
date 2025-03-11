@@ -20,7 +20,7 @@ void _main()
 	static bool useSynchronousAudio = true;
 	static bool lastUseSynchronousAudio = false;
 
-	HMODULE game = GetModuleHandleW(L"GTA5.exe");
+	HMODULE game = GetModuleHandleW(L"GTA5_Enhanced.exe");
 	if (!game)
 	{
 		return;
@@ -33,32 +33,33 @@ void _main()
 	*	https://runtime.fivem.net/fivem-service-agreement-4.pdf
 	*	https://github.com/citizenfx/fivem/blob/master/code/LICENSE
 	*/
-	const char* asynchronousAudioPattern = "E8 ? ? ? ? 40 38 35 ? ? ? ? 75 05";
-	const char* audioTimeoutPattern = "8B 15 ? ? ? ? 41 03 D6 3B";
+	const char* asynchronousAudioPattern = "48 89 d9 89 fa e8 ? ? ? ? 80 3d ? ? ? ? 00 75 ? e8 ? ? ? ?";
+	const char* audioTimeoutPattern = "81 c3 e8 03 00 00 39 d7 0f 94 c1 39 d8";
 
 	/*
 	*   Credit to Special For for finding this CSystem frame limiter sleep loop and 
 	*/
-	const char* frameLimiterPattern = "F3 44 0F 59 05 ? ? ? ? 0F 28 C7 F3 41 0F 58 C0 0F 2F C6 72 ? E8";
-	const char* audioLimiter2Pattern = "48 8B 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 40 38 35 ?? ?? ?? ?? 75 ?? 40 38 35 ?? ?? ?? ?? 75 ?? E8 ?? ?? ?? ?? 84 C0";
+	//const char* frameLimiterPattern = "F3 44 0F 59 05 ? ? ? ? 0F 28 C7 F3 41 0F 58 C0 0F 2F C6 72 ? E8";
+	const char* audioLimiter2Pattern = "48 8b 0d ? ? ? ? ba ff ff ff ff e8 ? ? ? ? 0f b6";
 
-	bool* asynchronousAudio = get_address<bool*>((uintptr_t)PatternScan(game, asynchronousAudioPattern) + 8);
-	int* audioTimeout = get_address<int*>((uintptr_t)PatternScan(game, audioTimeoutPattern) + 2);
+	bool* asynchronousAudio = get_address<bool*>((uintptr_t)PatternScan(game, asynchronousAudioPattern) + 13);
+	uint8_t* audioTimeout = (PatternScan(game, audioTimeoutPattern) + 2);
+	if (enableStutterFix && audioTimeout)
+	{
+		int timeout = 0;
+		Write(audioTimeout, &timeout, sizeof(timeout));
+	}
 
-	uint8_t* frameLimiterLoop = (uint8_t*)(PatternScan(game, frameLimiterPattern));
+	//uint8_t* frameLimiterLoop = (uint8_t*)(PatternScan(game, frameLimiterPattern));
 	uint8_t* audioLimiter2 = (uint8_t*)(PatternScan(game, audioLimiter2Pattern));
 	if (uncapFPS) {
 		*asynchronousAudio = false;
 
 		// If you load a save, these will be null because we have already patched that code and the pattern doesn't match
-		if (frameLimiterLoop && audioLimiter2) {
-			nop(frameLimiterLoop + 20, 2);
-			nop(audioLimiter2 + 7, 5);
+		if (audioLimiter2) {
+			//nop(frameLimiterLoop + 20, 2);
+			nop(audioLimiter2 + 12, 5);
 		}
-	}
-
-	if (enableStutterFix) {
-		*audioTimeout = 0;
 	}
 }
 
