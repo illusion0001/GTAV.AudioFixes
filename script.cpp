@@ -1,8 +1,5 @@
 #include "script.h"
 #include "utils.h"
-#include <format>
-#include <sstream>
-#include <iostream>
 
 /// <summary>
 /// The audioTimeout field controls something related to the synchronization of the game thread and the audio thread. 
@@ -23,8 +20,12 @@ void _main()
 	static bool useSynchronousAudio = true;
 	static bool lastUseSynchronousAudio = false;
 
-	uintptr_t base = (uintptr_t)GetModuleHandle("GTA5.exe");
-
+	HMODULE game = GetModuleHandleW(L"GTA5.exe");
+	if (!game)
+	{
+		return;
+	}
+	uintptr_t base = (uintptr_t)game;
 
 	/*
 	*	Adapted from the CitizenFX project, retrieved 2022-12-04.
@@ -41,11 +42,11 @@ void _main()
 	const char* frameLimiterPattern = "F3 44 0F 59 05 ? ? ? ? 0F 28 C7 F3 41 0F 58 C0 0F 2F C6 72 ? E8";
 	const char* audioLimiter2Pattern = "48 8B 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 40 38 35 ?? ?? ?? ?? 75 ?? 40 38 35 ?? ?? ?? ?? 75 ?? E8 ?? ?? ?? ?? 84 C0";
 
-	bool* asynchronousAudio = get_address<bool*>((uintptr_t)PatternScan(GetModuleHandleW(L"GTA5.exe"), asynchronousAudioPattern) + 8);
-	int* audioTimeout = get_address<int*>((uintptr_t)PatternScan(GetModuleHandleW(L"GTA5.exe"), audioTimeoutPattern) + 2);
+	bool* asynchronousAudio = get_address<bool*>((uintptr_t)PatternScan(game, asynchronousAudioPattern) + 8);
+	int* audioTimeout = get_address<int*>((uintptr_t)PatternScan(game, audioTimeoutPattern) + 2);
 
-	uint8_t* frameLimiterLoop = (uint8_t*)(PatternScan(GetModuleHandleW(L"GTA5.exe"), frameLimiterPattern));
-	uint8_t* audioLimiter2 = (uint8_t*)(PatternScan(GetModuleHandleW(L"GTA5.exe"), audioLimiter2Pattern));
+	uint8_t* frameLimiterLoop = (uint8_t*)(PatternScan(game, frameLimiterPattern));
+	uint8_t* audioLimiter2 = (uint8_t*)(PatternScan(game, audioLimiter2Pattern));
 	if (uncapFPS) {
 		*asynchronousAudio = false;
 
