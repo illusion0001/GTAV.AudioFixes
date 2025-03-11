@@ -8,33 +8,10 @@
   <ItemGroup>
     <ClInclude Include="script.h" />
     <ClInclude Include="utils.h" />
-    <ClInclude Include="lib\ScriptHookV_SDK\inc\enums.h">
-      <Filter>lib\ScriptHookV</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ScriptHookV_SDK\inc\main.h">
-      <Filter>lib\ScriptHookV</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ScriptHookV_SDK\inc\nativeCaller.h">
-      <Filter>lib\ScriptHookV</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ScriptHookV_SDK\inc\natives.h">
-      <Filter>lib\ScriptHookV</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ScriptHookV_SDK\inc\types.h">
-      <Filter>lib\ScriptHookV</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="lib">
-      <UniqueIdentifier>{56cccdbd-421c-4415-b011-3b1aaf0992e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\ScriptHookV">
-      <UniqueIdentifier>{cc273620-63bb-480e-8d12-a467e648963d}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="lib\ScriptHookV_SDK\lib\ScriptHookV.lib">
-      <Filter>lib\ScriptHookV</Filter>
-    </Library>
+    <None Include="LICENSE" />
+    <None Include="LICENSE.CitizenFX" />
+    <None Include="README.md" />
   </ItemGroup>
 </Project>

@@ -16,7 +16,7 @@ The mod is distrubuted in two versions
 
 ### Dependencies
 
-* ScriptHookV from Alexander Blade http://www.dev-c.com/gtav/scripthookv/
+* [ASI Loader](https://github.com/ThirteenAG/Ultimate-ASI-Loader)
 
 ### Installing
 
