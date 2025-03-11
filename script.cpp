@@ -18,7 +18,7 @@ bool enableStutterFix = true;
 /// </summary>
 bool uncapFPS = true;
 
-void main()
+void _main()
 {
 	static bool useSynchronousAudio = true;
 	static bool lastUseSynchronousAudio = false;
@@ -63,5 +63,5 @@ void main()
 
 void ScriptMain()
 {
-	main();
+	_main();
 }
